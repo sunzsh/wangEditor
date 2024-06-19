@@ -814,4 +814,26 @@ export const DomEditor = {
 
     return false
   },
+
+  /**
+   * Get the selected text and its index position in the full content.
+   * @param editor editor instance
+   * @returns { text: string, index: number } Selected text and its index position
+   */
+  getSelectionTextWithIndex(editor: IDomEditor): { text: string; index: number } {
+    const { selection } = editor
+    if (selection == null) return { text: '', index: -1 }
+
+    const selectedText = Editor.string(editor, selection)
+    const contentText = Editor.string(editor, [])
+    const anchorOffset = selection.anchor.offset
+    const focusOffset = selection.focus.offset
+
+    // Calculate the start index of the selected text in the full content
+    const startIndex = Math.min(anchorOffset, focusOffset)
+    const endIndex = Math.max(anchorOffset, focusOffset)
+    const index = contentText.indexOf(selectedText, startIndex)
+
+    return { text: selectedText, index }
+  },
 }

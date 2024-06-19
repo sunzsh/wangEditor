@@ -250,4 +250,34 @@ describe('Core DomEditor', () => {
     editor.select(genStartLocation()) // 选中开始
     expect(DomEditor.isSelectionAtLineEnd(editor, [0])).toBeFalsy() // 在第一行的开头
   })
+
+  // Add unit tests for the `getSelectionTextWithIndex()` method
+  describe('getSelectionTextWithIndex', () => {
+    test('should return selected text and its index position', () => {
+      // Prepare editor content and selection
+      editor.children = [
+        { type: 'paragraph', children: [{ text: 'Hello world' }] },
+        { type: 'paragraph', children: [{ text: 'This is a test' }] },
+      ]
+      const start = { path: [0, 0], offset: 6 } // Start from 'world'
+      const end = { path: [1, 0], offset: 7 } // End at 'is a tes'
+      editor.selection = { anchor: start, focus: end }
+
+      // Execute the method
+      const result = DomEditor.getSelectionTextWithIndex(editor)
+
+      // Assert the result
+      expect(result.text).toBe('worldThis is a tes')
+      expect(result.index).toBe(6)
+    })
+
+    test('should return empty string and -1 when no selection', () => {
+      editor.selection = null
+
+      const result = DomEditor.getSelectionTextWithIndex(editor)
+
+      expect(result.text).toBe('')
+      expect(result.index).toBe(-1)
+    })
+  })
 })

@@ -36,3 +36,12 @@
 - 命令行，进入某个 package ，如 `cd packages/editor`
 - 执行 `yarn size-stats` ，等待执行完成
 - 结果会记录在 `packages/editor/stats.html` 用浏览器打开
+
+## 新增 `getSelectionTextWithIndex` 方法
+
+在 `packages/core/src/editor/dom-editor.ts` 中新增了 `getSelectionTextWithIndex` 方法。该方法用于获取当前选中的文本内容及其在全文中的索引位置。使用示例如下：
+
+```javascript
+const { text, index } = editor.getSelectionTextWithIndex()
+console.log(text, index)
+```
